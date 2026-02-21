@@ -1,0 +1,427 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.app-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px 12px 36px;
+}
+
+.app-header {
+  background: linear-gradient(180deg, #162535 0%, #0f1b28 100%);
+  border: 1px solid #24374d;
+  border-radius: 16px;
+  padding: 16px;
+  color: #f4f7fb;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: clamp(1.3rem, 4.5vw, 2rem);
+}
+
+.overline {
+  margin: 0 0 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8fb3d7;
+  font-size: 0.75rem;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: #d3dfeb;
+  font-size: 0.95rem;
+}
+
+.tabs {
+  margin-top: 12px;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.tab-button {
+  border: 1px solid #2f3d4f;
+  border-radius: 10px;
+  background: #111c29;
+  color: #dce6f0;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.tab-button.active {
+  background: #294e7a;
+  border-color: #4f82bb;
+}
+
+.alert {
+  margin-top: 12px;
+  border-radius: 10px;
+  padding: 8px 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  border: 1px solid transparent;
+}
+
+.alert.success {
+  background: #123925;
+  border-color: #2f7e4f;
+  color: #d9f8e6;
+}
+
+.alert.error {
+  background: #3a1518;
+  border-color: #9f3c46;
+  color: #ffdce0;
+}
+
+.alert button {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.content {
+  margin-top: 14px;
+}
+
+.stack {
+  display: grid;
+  gap: 12px;
+}
+
+.panel {
+  border: 1px solid #273649;
+  background: #121c28;
+  border-radius: 14px;
+  padding: 14px;
+}
+
+.panel h2 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+}
+
+.stat-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stat-card {
+  border-radius: 12px;
+  border: 1px solid #2d3d53;
+  background: #172636;
+  padding: 10px;
+}
+
+.stat-card p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #9eb4cb;
+}
+
+.stat-card strong {
+  display: block;
+  margin-top: 6px;
+  font-size: 1.35rem;
+}
+
+.side-yellow {
+  background: #4a3c11;
+  border-color: #8b7420;
+}
+
+.side-white {
+  background: #253543;
+  border-color: #506a80;
+}
+
+.form-grid {
+  display: grid;
+  gap: 10px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+input,
+select {
+  width: 100%;
+  border: 1px solid #3a4a60;
+  border-radius: 10px;
+  background: #0d1722;
+  color: #f5f8fb;
+  padding: 10px;
+  font-size: 0.95rem;
+}
+
+button {
+  border: 1px solid #4676af;
+  background: #2c629e;
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 10px 12px;
+}
+
+button.secondary {
+  border-color: #53657f;
+  background: #2a3749;
+}
+
+button.ghost {
+  border-color: #4b5a6f;
+  background: transparent;
+  color: #dce6f0;
+}
+
+.score-row {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+th,
+td {
+  border-bottom: 1px solid #243346;
+  text-align: left;
+  padding: 8px;
+  font-size: 0.9rem;
+}
+
+thead th {
+  color: #a4b7cb;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.recent-list,
+.player-list,
+.compact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.recent-list li,
+.player-list li,
+.compact-list li {
+  border: 1px solid #2a3950;
+  border-radius: 10px;
+  background: #152231;
+  padding: 10px;
+}
+
+.player-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.line-main {
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.line-secondary {
+  margin: 0;
+  color: #a6bbce;
+  font-size: 0.82rem;
+}
+
+.side-chip {
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 0.78rem;
+  border: 1px solid transparent;
+}
+
+.side-chip.yellow {
+  background: #6e5a1a;
+  border-color: #a1882b;
+}
+
+.side-chip.white {
+  background: #2f4358;
+  border-color: #57789d;
+}
+
+.participant-box {
+  border: 1px solid #334660;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.participant-box legend {
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0 6px;
+}
+
+.checkbox-grid {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 0.88rem;
+}
+
+.checkbox-row input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+.competition-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.competition-card {
+  border: 1px solid #2b3c52;
+  border-radius: 12px;
+  background: #131f2d;
+  padding: 10px;
+}
+
+.competition-card header h3 {
+  margin: 0;
+}
+
+.competition-card header p {
+  margin: 4px 0 8px;
+  color: #a5bbd1;
+  font-size: 0.85rem;
+}
+
+.bracket-wrap {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bracket-round {
+  min-width: 220px;
+}
+
+.bracket-round h4 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: #c7d8ea;
+}
+
+.bracket-matches {
+  display: grid;
+  gap: 8px;
+}
+
+.bracket-match {
+  border: 1px solid #31445c;
+  border-radius: 10px;
+  background: #162535;
+  padding: 8px;
+  display: grid;
+  gap: 4px;
+}
+
+.entry {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.entry.winner {
+  color: #91f5b4;
+  font-weight: 700;
+}
+
+.inline-form {
+  margin-top: 4px;
+  display: grid;
+  gap: 8px;
+}
+
+.inline-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.small {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #a7bbcf;
+}
+
+.empty {
+  margin: 0;
+  color: #99afc7;
+}
+
+@media (min-width: 768px) {
+  .app-shell {
+    padding: 22px 18px 46px;
+  }
+
+  .tabs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-grid > button {
+    grid-column: span 2;
+  }
+}
