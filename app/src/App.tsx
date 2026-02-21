@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { submitBracketResult, generateSingleEliminationBracket } from './lib/bracket'
 import { calculateLadderStandings, calculatePlayerStats } from './lib/stats'
@@ -15,10 +15,12 @@ import type {
   CompetitionMode,
   CompetitionType,
   Entrant,
+  LadderStanding,
   MatchMode,
   MatchRecord,
   Side,
 } from './types'
+import type { FormEvent } from 'react'
 
 type TabId = 'overview' | 'players' | 'matches' | 'competitions'
 
@@ -69,10 +71,13 @@ function App() {
   )
   const playerStats = useMemo(() => calculatePlayerStats(players, matches), [players, matches])
   const ladderTables = useMemo(() => {
-    const entries = competitions
+    const table = new Map<string, LadderStanding[]>()
+    competitions
       .filter((competition) => competition.type === 'ladder')
-      .map((competition) => [competition.id, calculateLadderStandings(competition, matches)])
-    return new Map(entries)
+      .forEach((competition) => {
+        table.set(competition.id, calculateLadderStandings(competition, matches))
+      })
+    return table
   }, [competitions, matches])
 
   const totalMatches = matches.length
@@ -125,9 +130,15 @@ function App() {
     scoreWhite: number
   } | null>(null)
 
+  const resolvedMatchCompetitionId = playCompetitions.some(
+    (competition) => competition.id === matchCompetitionId,
+  )
+    ? matchCompetitionId
+    : (playCompetitions[0]?.id ?? '')
+
   const selectedPlayCompetition = useMemo(
-    () => playCompetitions.find((competition) => competition.id === matchCompetitionId) ?? null,
-    [playCompetitions, matchCompetitionId],
+    () => playCompetitions.find((competition) => competition.id === resolvedMatchCompetitionId) ?? null,
+    [playCompetitions, resolvedMatchCompetitionId],
   )
 
   const selectedMatchMode: MatchMode | null = selectedPlayCompetition
@@ -135,46 +146,6 @@ function App() {
       ? mixedFriendlyMode
       : (selectedPlayCompetition.mode as MatchMode)
     : null
-
-  useEffect(() => {
-    if (newCompetitionType !== 'friendly' && newCompetitionMode === 'mixed') {
-      setNewCompetitionMode('1v1')
-    }
-  }, [newCompetitionType, newCompetitionMode])
-
-  useEffect(() => {
-    if (newCompetitionType === 'friendly') {
-      setDraftSingleEntrants([])
-      setDraftTeamEntrants([])
-    }
-  }, [newCompetitionType])
-
-  useEffect(() => {
-    if (newCompetitionMode === '1v1') {
-      setDraftTeamEntrants([])
-    }
-    if (newCompetitionMode === '2v2') {
-      setDraftSingleEntrants([])
-    }
-  }, [newCompetitionMode])
-
-  useEffect(() => {
-    if (playCompetitions.length === 0) {
-      setMatchCompetitionId('')
-      return
-    }
-    const currentExists = playCompetitions.some((competition) => competition.id === matchCompetitionId)
-    if (!currentExists) {
-      setMatchCompetitionId(playCompetitions[0].id)
-    }
-  }, [matchCompetitionId, playCompetitions])
-
-  useEffect(() => {
-    if (selectedPlayCompetition?.type !== 'ladder') {
-      setLadderYellowEntrantId('')
-      setLadderWhiteEntrantId('')
-    }
-  }, [selectedPlayCompetition?.type])
 
   const playerNameById = (playerId: string): string => playersById.get(playerId)?.name ?? 'Неизвестный'
 
@@ -206,6 +177,43 @@ function App() {
   const clearAlerts = (): void => {
     setError('')
     setNotice('')
+  }
+
+  const handleCompetitionTypeChange = (type: CompetitionType): void => {
+    setNewCompetitionType(type)
+
+    if (type !== 'friendly' && newCompetitionMode === 'mixed') {
+      setNewCompetitionMode('1v1')
+    }
+    if (type === 'friendly') {
+      setDraftSingleEntrants([])
+      setDraftTeamEntrants([])
+    }
+  }
+
+  const handleCompetitionModeChange = (mode: CompetitionMode): void => {
+    setNewCompetitionMode(mode)
+
+    if (mode === 'mixed') {
+      setDraftSingleEntrants([])
+      setDraftTeamEntrants([])
+      return
+    }
+
+    if (mode === '1v1') {
+      setDraftTeamEntrants([])
+      return
+    }
+    setDraftSingleEntrants([])
+  }
+
+  const handleMatchCompetitionChange = (competitionId: string): void => {
+    setMatchCompetitionId(competitionId)
+    const competition = playCompetitions.find((item) => item.id === competitionId)
+    if (!competition || competition.type !== 'ladder') {
+      setLadderYellowEntrantId('')
+      setLadderWhiteEntrantId('')
+    }
   }
 
   const addPlayer = (event: FormEvent<HTMLFormElement>): void => {
@@ -289,6 +297,11 @@ function App() {
     const cleanedName = normalizeName(newCompetitionName)
     if (!cleanedName) {
       setError('Введите название соревнования.')
+      return
+    }
+
+    if (newCompetitionType !== 'friendly' && newCompetitionMode === 'mixed') {
+      setError('Для плей-офф и рейтинговой сетки выберите режим 1 на 1 или 2 на 2.')
       return
     }
 
@@ -707,8 +720,8 @@ function App() {
                   <label>
                     Соревнование
                     <select
-                      value={matchCompetitionId}
-                      onChange={(event) => setMatchCompetitionId(event.target.value)}
+                      value={resolvedMatchCompetitionId}
+                      onChange={(event) => handleMatchCompetitionChange(event.target.value)}
                     >
                       {playCompetitions.map((competition) => (
                         <option key={competition.id} value={competition.id}>
@@ -906,7 +919,7 @@ function App() {
                   Тип
                   <select
                     value={newCompetitionType}
-                    onChange={(event) => setNewCompetitionType(event.target.value as CompetitionType)}
+                    onChange={(event) => handleCompetitionTypeChange(event.target.value as CompetitionType)}
                   >
                     <option value="friendly">Дружеские матчи</option>
                     <option value="ladder">Рейтинговая сетка (очки)</option>
@@ -918,7 +931,7 @@ function App() {
                   Режим
                   <select
                     value={newCompetitionMode}
-                    onChange={(event) => setNewCompetitionMode(event.target.value as CompetitionMode)}
+                    onChange={(event) => handleCompetitionModeChange(event.target.value as CompetitionMode)}
                   >
                     {newCompetitionType === 'friendly' && <option value="mixed">Смешанный (1v1 + 2v2)</option>}
                     <option value="1v1">1 на 1</option>
