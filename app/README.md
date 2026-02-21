@@ -31,6 +31,16 @@ npm run dev
 
 Откройте URL из консоли (обычно `http://localhost:5173`).
 
+## Запуск через Docker Compose (из корня репозитория)
+
+```bash
+docker compose up --build
+```
+
+После старта откройте:
+
+`http://localhost:8080`
+
 ## Сборка
 
 ```bash

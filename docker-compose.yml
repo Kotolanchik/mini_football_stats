@@ -1,0 +1,9 @@
+services:
+  web:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: kicker-winrate-web
+    ports:
+      - "8080:80"
+    restart: unless-stopped
